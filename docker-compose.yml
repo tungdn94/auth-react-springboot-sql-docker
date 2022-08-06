@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  cloud-config:
+    build: ./cloud-config
+    image: tung-cloud-config:0.0.1-SNAPSHOT
+    container_name: cloud-config
+    networks:
+      - auth_network
+    environment:
+      SERVER_PORT: 1000
+      GIT_URL: https://github.com/tungdn94/arsmd-config-repo
+      GIT_BRANCH: main
+    ports:
+      - '1000:1000'
+  jwt-service:
+    depends_on:
+      - cloud-config
+    build: ./jwt-service
+    image: tung-jwt-service:0.0.1-SNAPSHOT
+    container_name: jwt-service
+    networks:
+      - auth_network
+    environment:
+      CLOUD_SERVER_URL: http://cloud-config:1000
+      ACTIVE_PROFILE: dev
+      SERVER_PORT: 8000
+    ports:
+      - "8000:8000"
+
+networks:
+  auth_network:
+    driver: bridge

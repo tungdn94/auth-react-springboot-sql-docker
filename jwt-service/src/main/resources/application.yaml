@@ -5,6 +5,15 @@ config:
     port: ${SERVER_PORT:8080}
 
 spring:
+  cloud:
+    config:
+      fail-fast: true
+      retry:
+        initial-interval: 3000
+        multiplier: 1.2
+        max-interval: 10000
+        max-attempts: 6
+
   application:
     name: jwt-service
   config:
