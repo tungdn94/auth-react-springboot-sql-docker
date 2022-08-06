@@ -1,0 +1,21 @@
+config:
+  server:
+    port: ${SERVER_PORT:8000}
+  git:
+    url: ${GIT_URL:file:////Users/tungdao/Project/mine-github/arsmd-config-repo}
+    default-label: ${GIT_BRANCH:main}
+
+spring:
+  application:
+    name: spring-cloud-config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: ${config.git.url}
+          default-label: ${config.git.default-label}
+
+server:
+  port: ${config.server.port}
+
+

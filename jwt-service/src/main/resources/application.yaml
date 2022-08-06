@@ -1,0 +1,16 @@
+config:
+  cloud-server: ${CLOUD_SERVER_URL:http://localhost:8000}
+  active-profile: ${ACTIVE_PROFILE:dev}
+  server:
+    port: ${SERVER_PORT:8080}
+
+spring:
+  application:
+    name: jwt-service
+  config:
+    import: optional:configserver:${config.cloud-server}
+  profiles:
+    active: ${config.active-profile}
+
+server:
+  port: ${config.server.port}
