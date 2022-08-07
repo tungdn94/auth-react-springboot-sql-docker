@@ -8,7 +8,7 @@ import tung.daongoc.jwtservice.config.TestConfig;
 import tung.daongoc.jwtservice.dto.response.TestResponse;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/jwt")
 @AllArgsConstructor
 public class TestController {
 	private TestConfig testConfig;
