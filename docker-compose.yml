@@ -75,7 +75,9 @@ services:
         condition: service_healthy
       eureka-naming:
         condition: service_healthy
-    build: ./jwt-service
+    build:
+      context: .
+      dockerfile: ./jwt-service/Dockerfile
     image: tung-jwt-service:0.0.1-SNAPSHOT
     container_name: jwt-service
     networks:

@@ -1,5 +1,13 @@
 *
-!/src/main
-!pom.xml
-!mvnw
-!mvnw.cmd
+
+# JWT service
+
+!/jwt-service/src/main
+!/jwt-service/pom.xml
+!/jwt-service/mvnw
+!/jwt-service/mvnw.cmd
+
+# Common
+
+!/common/src/main
+!/common/pom.xml

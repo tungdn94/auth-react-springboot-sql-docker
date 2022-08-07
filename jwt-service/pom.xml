@@ -84,6 +84,11 @@
 			<version>${spring-boot.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>tung.daongoc</groupId>
+			<artifactId>common</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -96,7 +101,6 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
 	<build>
 		<plugins>
 			<plugin>
