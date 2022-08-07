@@ -1,6 +1,6 @@
 config:
   server:
-    port: ${SERVER_PORT:8000}
+    port: ${SERVER_PORT:7000}
   git:
     url: ${GIT_URL:file:////Users/tungdao/Project/mine-github/arsmd-config-repo}
     default-label: ${GIT_BRANCH:main}

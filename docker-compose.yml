@@ -13,18 +13,54 @@ services:
       GIT_BRANCH: main
     ports:
       - '1000:1000'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://cloud-config:1000/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+  eureka-naming:
+    depends_on:
+        cloud-config:
+          condition: service_healthy
+    build: ./naming-server
+    image: tung-eureka-naming:0.0.1-SNAPSHOT
+    container_name: eureka-naming
+    networks:
+      - auth_network
+    environment:
+      SERVER_PORT: 1100
+      CLOUD_SERVER_URL: cloud-config
+      CLOUD_SERVER_PORT: 1000
+      ACTIVE_PROFILE: dev
+      EUREKA_SERVER_URL: eureka-naming
+      EUREKA_SERVER_PORT: 1100
+    ports:
+      - '1100:1100'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://eureka-naming:1100/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
   jwt-service:
     depends_on:
-      - cloud-config
+      cloud-config:
+        condition: service_healthy
+      eureka-naming:
+        condition: service_healthy
     build: ./jwt-service
     image: tung-jwt-service:0.0.1-SNAPSHOT
     container_name: jwt-service
     networks:
       - auth_network
     environment:
-      CLOUD_SERVER_URL: http://cloud-config:1000
+      CLOUD_SERVER_URL: cloud-config
+      CLOUD_SERVER_PORT: 1000
       ACTIVE_PROFILE: dev
       SERVER_PORT: 8000
+      EUREKA_SERVER_URL: eureka-naming
+      EUREKA_SERVER_PORT: 1100
     ports:
       - "8000:8000"
 

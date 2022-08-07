@@ -7,14 +7,11 @@ config:
     url: ${EUREKA_SERVER_URL:localhost}
     port: ${EUREKA_SERVER_PORT:7100}
   server:
-    port: ${SERVER_PORT:8000}
+    port: ${SERVER_PORT:7100}
 
 spring:
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
   application:
-    name: jwt-service
+    name: naming-server
   config:
     import: optional:configserver:http://${config.cloud-server.url}:${config.cloud-server.port}
   profiles:
@@ -25,5 +22,7 @@ server:
 
 eureka:
   client:
+    register-with-eureka: false
+    fetch-registry: false
     serviceUrl:
       defaultZone: http://${config.eureka-server.url}:${config.eureka-server.port}/eureka
