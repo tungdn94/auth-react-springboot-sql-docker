@@ -6,6 +6,9 @@ config:
   eureka-server:
     url: ${EUREKA_SERVER_URL:localhost}
     port: ${EUREKA_SERVER_PORT:7100}
+  zipkin-server:
+    url: ${ZIPKIN_SERVER_URL:localhost}
+    port: ${ZIPKIN_SERVER_PORT:9411}
   server:
     port: ${SERVER_PORT:7200}
 
@@ -19,6 +22,11 @@ spring:
     import: optional:configserver:http://${config.cloud-server.url}:${config.cloud-server.port}
   profiles:
     active: ${config.cloud-server.active-profile}
+  sleuth:
+    sampler:
+      percentage: 1
+  zipkin:
+    base-url: http://${config.zipkin-server.url}:${config.zipkin-server.port}/
 
 server:
   port: ${config.server.port}
