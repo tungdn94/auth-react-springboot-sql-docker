@@ -19,6 +19,31 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
+  adminer:
+    image: adminer
+    container_name: adminer-admin
+    networks:
+      - auth_network
+    restart: always
+    ports:
+      - '1400:8080'
+  zipkin-storage:
+    container_name: zipkin-storage
+    image: mysql:8.0
+    cap_add:
+      - SYS_NICE
+    command: --default-authentication-plugin=mysql_native_password
+    networks:
+      - auth_network
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: zipkin_db
+      MYSQL_USER: zipkin_user
+      MYSQL_PASSWORD: zipkin_pass
+    volumes:
+      - zipkin-volume:/var/lib/mysql
+      - ./zipkin-db/mysql.sql:/docker-entrypoint-initdb.d/init.sql
   zipkin-server:
     image: openzipkin/zipkin:latest-arm64
     container_name: zipkin-server
@@ -26,6 +51,13 @@ services:
       - auth_network
     ports:
       - "1300:9411"
+    environment:
+      STORAGE_TYPE: mysql
+      MYSQL_DB: zipkin_db
+      MYSQL_HOST: zipkin-storage
+      MYSQL_USER: zipkin_user
+      MYSQL_PASS: zipkin_pass
+      MYSQL_TCP_PORT: 3306
   eureka-naming:
     depends_on:
         cloud-config:
@@ -110,3 +142,7 @@ services:
 networks:
   auth_network:
     driver: bridge
+
+volumes:
+  zipkin-volume:
+    driver: local
