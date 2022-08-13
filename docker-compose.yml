@@ -138,6 +138,39 @@ services:
       ZIPKIN_SERVER_PORT: 9411
     ports:
       - "8000:8000"
+  prometheus:
+    image: prom/prometheus:v2.35.0
+    networks:
+      - auth_network
+    container_name: prometheus
+    depends_on:
+      jwt-service:
+        condition: service_started
+    ports:
+      - '9090:9090'
+    restart: unless-stopped
+    volumes:
+      - ./prometheus:/etc/prometheus/
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yaml'
+
+  grafana:
+    image: grafana/grafana-oss:8.5.2
+    container_name: grafana
+    networks:
+      - auth_network
+    ports:
+      - '3000:3000'
+    depends_on:
+      prometheus:
+        condition: service_started
+    restart: unless-stopped
+    links:
+      - prometheus:prometheus
+    volumes:
+      - grafana-volume:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
 
 networks:
   auth_network:
@@ -145,4 +178,6 @@ networks:
 
 volumes:
   zipkin-volume:
+    driver: local
+  grafana-volume:
     driver: local

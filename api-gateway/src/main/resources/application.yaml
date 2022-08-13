@@ -35,3 +35,11 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://${config.eureka-server.url}:${config.eureka-server.port}/eureka
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - prometheus
+          - health
