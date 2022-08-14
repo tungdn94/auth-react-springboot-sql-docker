@@ -1,7 +1,6 @@
 package tung.daongoc.apigateway.config;
 
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
@@ -10,14 +9,17 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @AllArgsConstructor
 public class ApiGatewayConfiguration {
-	private ApiRouteProperties apiRouteProperties;
+	private JwtApiRouteProperties apiRouteProperties;
 	private ServiceRouteProperties serviceProperties;
 	@Bean
 	public RouteLocator gatewayRouter(RouteLocatorBuilder builder){
 		return builder.routes()
-				.route("jwt",
-						p -> p.path(patternURI(apiRouteProperties.getJwtService()))
+				.route("jwt-account",
+						p -> p.path(patternURI(apiRouteProperties.getAccount()))
 						.uri(loadBalancingURI(serviceProperties.getJwtService())))
+				.route("jwt-user",
+						p -> p.path(patternURI(apiRouteProperties.getUser()))
+								.uri(loadBalancingURI(serviceProperties.getJwtService())))
 				.build();
 	}
 	

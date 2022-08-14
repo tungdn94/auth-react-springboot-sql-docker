@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import tung.daongoc.dto.systemenum.UserRole;
 
 import java.util.List;
 
@@ -14,5 +15,5 @@ import java.util.List;
 public class UserInfoDto {
 	private String userName;
 	private String email;
-	private List<Role> roles;
+	private List<UserRole> userRoles;
 }

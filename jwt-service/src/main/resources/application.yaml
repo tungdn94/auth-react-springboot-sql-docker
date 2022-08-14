@@ -11,6 +11,13 @@ config:
     port: ${ZIPKIN_SERVER_PORT:9411}
   server:
     port: ${SERVER_PORT:8000}
+  database:
+    port: ${DATABASE_PORT:3306}
+    address: ${DATABASE_URL:localhost}
+    name: ${DATABASE_NAME:user_db}
+    username: ${DATABASE_USERNAME:root}
+    password: ${DATABASE_PASSWORD:root@123}
+
 
 spring:
   mvc:
@@ -27,7 +34,15 @@ spring:
       probability: 1
   zipkin:
     base-url: http://${config.zipkin-server.url}:${config.zipkin-server.port}/
-
+  datasource:
+    url: jdbc:mysql://${config.database.address}:${config.database.port}/${config.database.name}
+    username: ${config.database.username}
+    password: ${config.database.password}
+#  jpa:
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
 server:
   port: ${config.server.port}
 
@@ -35,3 +50,11 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://${config.eureka-server.url}:${config.eureka-server.port}/eureka
+
+
+jwt:
+  header: "Authorization"
+  prefix: "Bearer "
+  secret: "jwtsecretjwtsecretjwtsecretjwtsecretjwtsecretjwtsecret"
+  duration: 180000
+  issuer: "JWT Microservice"
